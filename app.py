@@ -1,7 +1,7 @@
 """
 ============================================================
   ILLINOIS HOUSE PRICE PREDICTOR — Streamlit Web App
-  Dataset: Realistic Illinois housing data (Chicago + suburbs)
+  Built by Akash Tatti
   Stack: Streamlit · Plotly · Pandas · Scikit-learn
 ============================================================
   Run with:  python -m streamlit run app.py
@@ -24,7 +24,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Illinois House Price Predictor",
+    page_title="Illinois House Price Predictor | Akash Tatti",
     page_icon="🏠",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -130,6 +130,57 @@ st.markdown("""
   }
   .info-card h4 { margin: 0 0 6px 0; color: #c9d1d9; font-size: 14px; }
   .info-card p  { margin: 0; color: #8b949e; font-size: 13px; line-height: 1.6; }
+
+  /* Author card in sidebar */
+  .author-card {
+    background: linear-gradient(135deg, #1f6feb15, #1f6feb08);
+    border: 1px solid #1f6feb33;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .author-avatar {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 10px auto;
+  }
+  .author-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    color: #ffffff; margin-bottom: 2px;
+  }
+  .author-title {
+    font-size: 11px; color: #8b949e;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding: 24px 0 8px 0;
+    border-top: 1px solid #21262d;
+    text-align: center;
+    color: #8b949e;
+    font-size: 13px;
+  }
+  .footer span { color: #58a6ff; font-weight: 600; }
+
+  /* Watermark badge */
+  .built-by {
+    display: inline-block;
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #8b949e;
+    font-family: 'Space Mono', monospace;
+    margin-top: 10px;
+  }
+  .built-by span { color: #58a6ff; }
 
   .stButton > button {
     background: linear-gradient(135deg, #1f6feb, #388bfd);
@@ -293,14 +344,26 @@ def train_models(df):
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
+    # App title
     st.markdown("""
-    <div style="padding:16px 0 24px 0;">
-      <div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:#58a6ff;">
+    <div style="padding:16px 0 8px 0;">
+      <div style="font-family:'Space Mono',monospace;font-size:17px;font-weight:700;color:#58a6ff;">
         🏠 Illinois Housing
       </div>
-      <div style="color:#8b949e;font-size:12px;margin-top:4px;">ML Price Predictor</div>
+      <div style="color:#8b949e;font-size:12px;margin-top:2px;">ML Price Predictor</div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Author card
+    st.markdown("""
+    <div class="author-card">
+      <div class="author-avatar">👨‍💻</div>
+      <div class="author-name">Akash Tatti</div>
+      <div class="author-title">Data Analyst · ML Developer</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     page = st.radio("Navigation", [
         "📊  Overview & EDA",
@@ -326,6 +389,15 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown("---")
+    st.markdown("""
+    <div style="color:#8b949e;font-size:11px;text-align:center;line-height:1.7;">
+      Built with ❤️ by <span style="color:#58a6ff;font-weight:600;">Akash Tatti</span><br>
+      © 2025 · MIT License
+    </div>
+    """, unsafe_allow_html=True)
+
+
 # ── Load data & train ─────────────────────────────────────────────────────────
 with st.spinner("Building Illinois housing dataset..."):
     df = load_illinois_data()
@@ -334,6 +406,17 @@ with st.spinner("Training 5 ML models on Illinois data..."):
     trained_models, model_results, X_test, y_test, FEATURES, ENC_COLS = train_models(df)
 
 best_name = max(model_results, key=lambda k: model_results[k]["R2"])
+
+# ── Shared footer function ────────────────────────────────────────────────────
+def render_footer():
+    st.markdown("""
+    <div class="footer">
+      Illinois House Price Predictor &nbsp;·&nbsp;
+      Built by <span>Akash Tatti</span> &nbsp;·&nbsp;
+      Python · Streamlit · Scikit-learn · Plotly &nbsp;·&nbsp;
+      © 2025 MIT License
+    </div>
+    """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 1 — OVERVIEW & EDA
@@ -348,10 +431,11 @@ if page == "📊  Overview & EDA":
       <span class="tag">Evanston</span>
       <span class="tag">20 Regions</span>
       <span class="tag">2,000 Homes</span>
+      <br>
+      <div class="built-by">Built by <span>Akash Tatti</span></div>
     </div>
     """, unsafe_allow_html=True)
 
-    # KPI row
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Homes",     f"{len(df):,}")
     c2.metric("Median Price",    f"${df['price'].median()/1000:.0f}K")
@@ -426,54 +510,32 @@ if page == "📊  Overview & EDA":
     st.markdown('<div class="section-title">Feature Relationships</div>', unsafe_allow_html=True)
 
     col_a, col_b = st.columns(2)
-
     with col_a:
-        # Square footage vs price — numpy trendline (no statsmodels needed)
         sample1 = df.sample(1000, random_state=1)
         m1, b1  = np.polyfit(sample1["sqft"], sample1["price"], 1)
         xs1     = np.linspace(sample1["sqft"].min(), sample1["sqft"].max(), 200)
         fig2    = go.Figure()
-        fig2.add_trace(go.Scatter(
-            x=sample1["sqft"], y=sample1["price"],
-            mode="markers",
-            marker=dict(color=COLORS[0], opacity=0.4, size=4),
-            name="Homes",
-        ))
-        fig2.add_trace(go.Scatter(
-            x=xs1, y=m1 * xs1 + b1,
-            mode="lines",
-            line=dict(color=COLORS[2], width=2),
-            name="Trend",
-        ))
+        fig2.add_trace(go.Scatter(x=sample1["sqft"], y=sample1["price"], mode="markers",
+                                  marker=dict(color=COLORS[0], opacity=0.4, size=4), name="Homes"))
+        fig2.add_trace(go.Scatter(x=xs1, y=m1 * xs1 + b1, mode="lines",
+                                  line=dict(color=COLORS[2], width=2), name="Trend"))
         fig2.update_layout(**PLOTLY_LAYOUT, title="Square Footage vs Price",
-                           xaxis_title="Square Footage", yaxis_title="Price ($)",
-                           showlegend=False)
+                           xaxis_title="Square Footage", yaxis_title="Price ($)", showlegend=False)
         st.plotly_chart(fig2, use_container_width=True)
 
     with col_b:
-        # School rating vs price — numpy trendline (no statsmodels needed)
         sample2 = df.sample(1000, random_state=2)
         m2, b2  = np.polyfit(sample2["school_rating"], sample2["price"], 1)
         xs2     = np.linspace(sample2["school_rating"].min(), sample2["school_rating"].max(), 200)
         fig3    = go.Figure()
-        fig3.add_trace(go.Scatter(
-            x=sample2["school_rating"], y=sample2["price"],
-            mode="markers",
-            marker=dict(color=COLORS[3], opacity=0.4, size=4),
-            name="Homes",
-        ))
-        fig3.add_trace(go.Scatter(
-            x=xs2, y=m2 * xs2 + b2,
-            mode="lines",
-            line=dict(color=COLORS[2], width=2),
-            name="Trend",
-        ))
+        fig3.add_trace(go.Scatter(x=sample2["school_rating"], y=sample2["price"], mode="markers",
+                                  marker=dict(color=COLORS[3], opacity=0.4, size=4), name="Homes"))
+        fig3.add_trace(go.Scatter(x=xs2, y=m2 * xs2 + b2, mode="lines",
+                                  line=dict(color=COLORS[2], width=2), name="Trend"))
         fig3.update_layout(**PLOTLY_LAYOUT, title="School Rating vs Price",
-                           xaxis_title="School Rating (1–10)", yaxis_title="Price ($)",
-                           showlegend=False)
+                           xaxis_title="School Rating (1–10)", yaxis_title="Price ($)", showlegend=False)
         st.plotly_chart(fig3, use_container_width=True)
 
-    # Correlation heatmap
     st.markdown('<div class="section-title">Correlation Matrix</div>', unsafe_allow_html=True)
     num_cols = ["price", "sqft", "bedrooms", "bathrooms", "house_age",
                 "garage_spaces", "school_rating", "property_tax", "lot_size"]
@@ -486,6 +548,8 @@ if page == "📊  Overview & EDA":
     fig_c.update_traces(textfont_size=11)
     st.plotly_chart(fig_c, use_container_width=True)
 
+    render_footer()
+
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 2 — MODEL TRAINING
 # ══════════════════════════════════════════════════════════════════════════════
@@ -497,6 +561,8 @@ elif page == "🤖  Model Training":
       <span class="tag">5 Models</span>
       <span class="tag">Cross-Validation</span>
       <span class="tag">80/20 Split</span>
+      <br>
+      <div class="built-by">Built by <span>Akash Tatti</span></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -548,20 +614,15 @@ elif page == "🤖  Model Training":
     pct10 = (np.abs((pred - act) / act) <= 0.10).mean() * 100
 
     fig_ap = go.Figure()
-    fig_ap.add_trace(go.Scatter(
-        x=act, y=pred, mode="markers",
-        marker=dict(color=COLORS[0], opacity=0.35, size=5),
-        name="Predictions",
-    ))
-    fig_ap.add_trace(go.Scatter(
-        x=[act.min(), act.max()], y=[act.min(), act.max()],
-        mode="lines", line=dict(color=COLORS[4], width=2, dash="dash"),
-        name="Perfect Prediction",
-    ))
+    fig_ap.add_trace(go.Scatter(x=act, y=pred, mode="markers",
+                                marker=dict(color=COLORS[0], opacity=0.35, size=5),
+                                name="Predictions"))
+    fig_ap.add_trace(go.Scatter(x=[act.min(), act.max()], y=[act.min(), act.max()],
+                                mode="lines", line=dict(color=COLORS[4], width=2, dash="dash"),
+                                name="Perfect Prediction"))
     fig_ap.update_layout(**PLOTLY_LAYOUT,
                          title=f"{sel} — {pct10:.1f}% of predictions within ±10% of actual",
-                         xaxis_title="Actual Price ($000s)",
-                         yaxis_title="Predicted Price ($000s)")
+                         xaxis_title="Actual Price ($000s)", yaxis_title="Predicted Price ($000s)")
     st.plotly_chart(fig_ap, use_container_width=True)
 
     st.markdown('<div class="section-title">Feature Importance — Gradient Boosting</div>', unsafe_allow_html=True)
@@ -576,30 +637,25 @@ elif page == "🤖  Model Training":
                           xaxis_title="Importance Score", height=420, showlegend=False)
     st.plotly_chart(fig_imp, use_container_width=True)
 
-    # Residuals
     st.markdown('<div class="section-title">Residual Analysis</div>', unsafe_allow_html=True)
     residuals = pred - act
     col3, col4 = st.columns(2)
-
     with col3:
-        fig_res = go.Figure(go.Scatter(
-            x=pred, y=residuals, mode="markers",
-            marker=dict(color=COLORS[3], opacity=0.35, size=4),
-        ))
+        fig_res = go.Figure(go.Scatter(x=pred, y=residuals, mode="markers",
+                                       marker=dict(color=COLORS[3], opacity=0.35, size=4)))
         fig_res.add_hline(y=0, line_dash="dash", line_color=COLORS[4], line_width=2)
         fig_res.update_layout(**PLOTLY_LAYOUT, title="Residuals vs Predicted",
                               xaxis_title="Predicted ($000s)", yaxis_title="Residual ($000s)")
         st.plotly_chart(fig_res, use_container_width=True)
-
     with col4:
-        fig_res2 = go.Figure(go.Histogram(
-            x=residuals, nbinsx=50,
-            marker_color=COLORS[2], opacity=0.85,
-        ))
+        fig_res2 = go.Figure(go.Histogram(x=residuals, nbinsx=50,
+                                           marker_color=COLORS[2], opacity=0.85))
         fig_res2.add_vline(x=0, line_dash="dash", line_color=COLORS[4], line_width=2)
         fig_res2.update_layout(**PLOTLY_LAYOUT, title="Residual Distribution",
                                xaxis_title="Residual ($000s)", yaxis_title="Count")
         st.plotly_chart(fig_res2, use_container_width=True)
+
+    render_footer()
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 3 — PREDICT PRICE
@@ -612,6 +668,8 @@ elif page == "🔮  Predict Price":
       <span class="tag">Real-time</span>
       <span class="tag">5 Models</span>
       <span class="tag">20 IL Regions</span>
+      <br>
+      <div class="built-by">Built by <span>Akash Tatti</span></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -692,7 +750,6 @@ elif page == "🔮  Predict Price":
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # All model comparison
         all_p = []
         for mn, (mo, ms, _) in trained_models.items():
             i2 = ms.transform(full_row) if ms else full_row
@@ -725,6 +782,8 @@ elif page == "🔮  Predict Price":
         </div>
         """, unsafe_allow_html=True)
 
+    render_footer()
+
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 4 — HOW IT WORKS
 # ══════════════════════════════════════════════════════════════════════════════
@@ -733,6 +792,8 @@ elif page == "📖  How It Works":
     <div class="hero">
       <div class="hero-title">📖 How It Works</div>
       <p class="hero-sub">The full ML pipeline — from Illinois housing data to live predictions.</p>
+      <br>
+      <div class="built-by">Built by <span>Akash Tatti</span></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -744,7 +805,7 @@ elif page == "📖  How It Works":
         ("3. Exploratory Data Analysis",
          "Price distributions, regional bar charts, and an interactive Illinois map reveal that North Side Chicago and Naperville homes trade at 2–4× the price of Rockford or Peoria."),
         ("4. Feature Engineering",
-         "year_built is converted to house_age. The 20 regions are one-hot encoded. An is_chicago flag captures the urban premium that cuts across many features."),
+         "year_built is converted to house_age. The 20 regions are one-hot encoded. An is_chicago flag captures the urban premium across many features."),
         ("5. Train-Test Split",
          "80% of homes train the models; 20% are held out for honest evaluation. The model never sees test homes during training — this prevents overfitting."),
         ("6. 5 Models Trained",
@@ -763,22 +824,24 @@ elif page == "📖  How It Works":
         </div>
         """, unsafe_allow_html=True)
 
-    # st.markdown("---")
-    # st.markdown('<div class="section-title">Resume Bullet Points</div>', unsafe_allow_html=True)
-    # st.markdown("""
-    # <div class="info-card">
-    #   <p>
-    #   • Built an end-to-end ML web app in <b>Streamlit</b> predicting home prices across
-    #     20 Illinois regions including Chicago neighborhoods, suburbs (Naperville, Evanston, Oak Park),
-    #     and downstate cities (Springfield, Rockford, Peoria)<br><br>
-    #   • Engineered Illinois-specific features: property tax rate, basement presence, school district
-    #     rating, and urban/suburban classification to improve model accuracy<br><br>
-    #   • Trained and compared <b>5 regression models</b> (Linear, Ridge, Lasso, Random Forest,
-    #     Gradient Boosting) with 5-fold cross-validation and full diagnostic reporting<br><br>
-    #   • Built interactive <b>Plotly</b> dashboards: geographic IL price map, regional comparisons,
-    #     correlation matrix, feature importances, and residual analysis<br><br>
-    #   • Deployed a live prediction tool allowing users to estimate home values for any Illinois
-    #     region with real-time comparison across all 5 trained models
-    #   </p>
-    # </div>
-    # """, unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown('<div class="section-title">Resume Bullet Points</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="info-card">
+      <p>
+      • Built an end-to-end ML web app in <b>Streamlit</b> predicting home prices across
+        20 Illinois regions including Chicago neighborhoods, suburbs (Naperville, Evanston, Oak Park),
+        and downstate cities (Springfield, Rockford, Peoria)<br><br>
+      • Engineered Illinois-specific features: property tax rate, basement presence, school district
+        rating, and urban/suburban classification to improve model accuracy<br><br>
+      • Trained and compared <b>5 regression models</b> (Linear, Ridge, Lasso, Random Forest,
+        Gradient Boosting) with 5-fold cross-validation and full diagnostic reporting<br><br>
+      • Built interactive <b>Plotly</b> dashboards: geographic IL price map, regional comparisons,
+        correlation matrix, feature importances, and residual analysis<br><br>
+      • Deployed a live prediction tool allowing users to estimate home values for any Illinois
+        region with real-time comparison across all 5 trained models
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_footer()
