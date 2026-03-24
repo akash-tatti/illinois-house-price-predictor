@@ -824,24 +824,24 @@ elif page == "📖  How It Works":
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown('<div class="section-title">Resume Bullet Points</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="info-card">
-      <p>
-      • Built an end-to-end ML web app in <b>Streamlit</b> predicting home prices across
-        20 Illinois regions including Chicago neighborhoods, suburbs (Naperville, Evanston, Oak Park),
-        and downstate cities (Springfield, Rockford, Peoria)<br><br>
-      • Engineered Illinois-specific features: property tax rate, basement presence, school district
-        rating, and urban/suburban classification to improve model accuracy<br><br>
-      • Trained and compared <b>5 regression models</b> (Linear, Ridge, Lasso, Random Forest,
-        Gradient Boosting) with 5-fold cross-validation and full diagnostic reporting<br><br>
-      • Built interactive <b>Plotly</b> dashboards: geographic IL price map, regional comparisons,
-        correlation matrix, feature importances, and residual analysis<br><br>
-      • Deployed a live prediction tool allowing users to estimate home values for any Illinois
-        region with real-time comparison across all 5 trained models
-      </p>
-    </div>
-    """, unsafe_allow_html=True)
+    # st.markdown("---")
+    # st.markdown('<div class="section-title">Resume Bullet Points</div>', unsafe_allow_html=True)
+    # st.markdown("""
+    # <div class="info-card">
+    #   <p>
+    #   • Built an end-to-end ML web app in <b>Streamlit</b> predicting home prices across
+    #     20 Illinois regions including Chicago neighborhoods, suburbs (Naperville, Evanston, Oak Park),
+    #     and downstate cities (Springfield, Rockford, Peoria)<br><br>
+    #   • Engineered Illinois-specific features: property tax rate, basement presence, school district
+    #     rating, and urban/suburban classification to improve model accuracy<br><br>
+    #   • Trained and compared <b>5 regression models</b> (Linear, Ridge, Lasso, Random Forest,
+    #     Gradient Boosting) with 5-fold cross-validation and full diagnostic reporting<br><br>
+    #   • Built interactive <b>Plotly</b> dashboards: geographic IL price map, regional comparisons,
+    #     correlation matrix, feature importances, and residual analysis<br><br>
+    #   • Deployed a live prediction tool allowing users to estimate home values for any Illinois
+    #     region with real-time comparison across all 5 trained models
+    #   </p>
+    # </div>
+    # """, unsafe_allow_html=True)
 
-    render_footer()
+    # render_footer()
